@@ -271,7 +271,7 @@ mod tests {
     fn test_normalize() {
         assert_eq!(
             Vec2::new(2.0, 2.0).normalize(),
-            Vec2::new(0.70710677, 0.70710677)
+            Vec2::new(0.7071067811865475, 0.7071067811865475)
         )
     }
 

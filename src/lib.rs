@@ -1,7 +1,6 @@
-mod GJK;
-mod shape;
+mod geometry;
+mod math;
 mod utils;
-mod vec2;
 
 use wasm_bindgen::prelude::*;
 
