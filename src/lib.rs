@@ -1,3 +1,4 @@
+mod collision;
 mod geometry;
 mod math;
 mod utils;

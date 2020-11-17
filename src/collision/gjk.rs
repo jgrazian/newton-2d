@@ -1,5 +1,5 @@
-use crate::shape::Shape;
-use crate::vec2::Vec2;
+use crate::geometry::Shape;
+use crate::math::Vec2;
 use std::f64;
 use wasm_bindgen::prelude::*;
 
@@ -173,8 +173,8 @@ pub fn intersect(shape_a: &dyn Shape, shape_b: &dyn Shape) -> Option<Vec2> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::shape::{Circle, Polygon, Shape};
-    use crate::vec2::Vec2;
+    use crate::geometry::{Circle, Polygon, Shape};
+    use crate::math::Vec2;
 
     #[test]
     fn test_triple_product() {

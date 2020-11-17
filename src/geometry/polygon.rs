@@ -10,16 +10,15 @@ pub struct Polygon {
 
 impl Polygon {
     pub fn new(v: Vec<Vec2>) -> Polygon {
+        if v.len() < 3 {
+            panic!("Polygon must have at least 3 verticies!")
+        }
         Polygon { vertices: v }
     }
 }
 
 impl Shape for Polygon {
     fn support(&self, dir: &Vec2) -> Vec2 {
-        if self.vertices.len() < 1 {
-            panic!("Not a polygon!")
-        }
-
         let mut max_dist: f64 = f64::MIN;
         let mut max_vertex: Vec2 = Vec2::new(0.0, 0.0);
 
@@ -70,6 +69,18 @@ impl Shape for Polygon {
 mod tests {
     use super::*;
     use crate::math::vec2::Vec2;
+
+    #[test]
+    fn test_polygon_support() {
+        let a = Polygon::new(vec![
+            Vec2::new(0.0, 0.0),
+            Vec2::new(5.0, 0.0),
+            Vec2::new(5.0, 5.0),
+            Vec2::new(0.0, 5.0),
+        ]);
+
+        assert_eq!(a.support(&Vec2::new(1.0, 1.0)), Vec2::new(5.0, 5.0));
+    }
 
     #[test]
     fn test_polygon_area() {

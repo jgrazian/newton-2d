@@ -35,6 +35,13 @@ mod tests {
     use crate::math::vec2::Vec2;
 
     #[test]
+    fn test_circle_support() {
+        let a = Circle::new(Vec2::new(1.0, 1.0), 1.0);
+
+        assert_eq!(a.support(&Vec2::new(1.0, 0.0)), Vec2::new(2.0, 1.0));
+    }
+
+    #[test]
     fn test_circle_center() {
         let a = Circle::new(Vec2::new(1.0, 1.0), 1.0);
 
