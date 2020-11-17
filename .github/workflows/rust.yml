@@ -22,3 +22,8 @@ jobs:
       uses: jetli/wasm-pack-action@v0.3.0
     - name: WASM Build
       run: wasm-pack build
+    - name: Outpt WASM Package
+      uses: actions/upload-artifact@v2
+      with:
+        name: newton-2d
+        path: /home/runner/work/newton-2d/newton-2d/pkg
