@@ -11,6 +11,7 @@ pub struct Vec2 {
 
 #[wasm_bindgen]
 impl Vec2 {
+    #[wasm_bindgen(constructor)]
     /// Creates a new Vec2
     pub fn new(x: f64, y: f64) -> Vec2 {
         Vec2 { x, y }
@@ -39,9 +40,22 @@ impl Vec2 {
         self.len_sq().sqrt()
     }
 
+    /// Angle needed to rotate this vector to lay on another vector.
+    pub fn angle_to(&self, other: &Vec2) -> f64 {
+        ((self.x * other.x + self.y * other.y) / (self.len() * other.len())).acos()
+    }
+
     /// Angle in radians
     pub fn angle(&self) -> f64 {
         self.y.atan2(self.x)
+    }
+
+    /// Rotate
+    pub fn rotate(&self, angle: f64) -> Vec2 {
+        Vec2 {
+            x: angle.cos() * self.x - angle.sin() * self.y,
+            y: angle.sin() * self.x + angle.cos() * self.y,
+        }
     }
 
     /// Normalize
@@ -55,17 +69,45 @@ impl Vec2 {
 
     pub fn lerp(v: &Vec2, w: &Vec2, percent: f64) -> Vec2 {
         Vec2 {
-            x: percent * (v.x() + w.x()),
-            y: percent * (v.y() + w.y()),
+            x: percent * (v.x + w.x),
+            y: percent * (v.y + w.y),
         }
     }
 
     pub fn dot(v: &Vec2, w: &Vec2) -> f64 {
-        v.x() * w.x() + v.y() * w.y()
+        v.x * w.x + v.y * w.y
     }
 
     pub fn cross(v: &Vec2, w: &Vec2) -> f64 {
-        v.x() * w.y() - v.y() * w.x()
+        v.x * w.y - v.y * w.x
+    }
+
+    pub fn add(&self, other: &Vec2) -> Vec2 {
+        Vec2 {
+            x: self.x + other.x,
+            y: self.y + other.y
+        }
+    }
+
+    pub fn sub(&self, other: &Vec2) -> Vec2 {
+        Vec2 {
+            x: self.x - other.x,
+            y: self.y - other.y
+        }
+    }
+
+    pub fn mul(&self, other: f64) -> Vec2 {
+        Vec2 {
+            x: self.x * other,
+            y: self.y * other
+        }
+    }
+
+    pub fn div(&self, other: f64) -> Vec2 {
+        Vec2 {
+            x: self.x / other,
+            y: self.y / other
+        }
     }
 }
 
@@ -74,16 +116,6 @@ impl Add<Vec2> for Vec2 {
     type Output = Vec2;
 
     fn add(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-impl Add<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn add(self, rhs: &Vec2) -> Vec2 {
         Vec2 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
@@ -110,22 +142,22 @@ impl Add<&Vec2> for Vec2 {
         }
     }
 }
+impl Add<&Vec2> for &Vec2 {
+    type Output = Vec2;
+
+    fn add(self, rhs: &Vec2) -> Vec2 {
+        Vec2 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
 
 // Subtraction
 impl Sub<Vec2> for Vec2 {
     type Output = Vec2;
 
     fn sub(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y,
-        }
-    }
-}
-impl Sub<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn sub(self, rhs: &Vec2) -> Vec2 {
         Vec2 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
@@ -152,22 +184,22 @@ impl Sub<Vec2> for &Vec2 {
         }
     }
 }
+impl Sub<&Vec2> for &Vec2 {
+    type Output = Vec2;
+
+    fn sub(self, rhs: &Vec2) -> Vec2 {
+        Vec2 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
 
 /// Componentwise vector multiplication
 impl Mul<Vec2> for Vec2 {
     type Output = Vec2;
 
     fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
-        }
-    }
-}
-impl Mul<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &Vec2) -> Vec2 {
         Vec2 {
             x: self.x * rhs.x,
             y: self.y * rhs.y,
@@ -194,22 +226,22 @@ impl Mul<Vec2> for &Vec2 {
         }
     }
 }
+impl Mul<&Vec2> for &Vec2 {
+    type Output = Vec2;
+
+    fn mul(self, rhs: &Vec2) -> Vec2 {
+        Vec2 {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+        }
+    }
+}
 
 /// Scalar Multiplication
 impl Mul<f64> for Vec2 {
     type Output = Vec2;
 
     fn mul(self, rhs: f64) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs,
-            y: self.y * rhs,
-        }
-    }
-}
-impl Mul<&f64> for &Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &f64) -> Vec2 {
         Vec2 {
             x: self.x * rhs,
             y: self.y * rhs,
@@ -236,22 +268,22 @@ impl Mul<f64> for &Vec2 {
         }
     }
 }
+impl Mul<&f64> for &Vec2 {
+    type Output = Vec2;
+
+    fn mul(self, rhs: &f64) -> Vec2 {
+        Vec2 {
+            x: self.x * rhs,
+            y: self.y * rhs,
+        }
+    }
+}
 
 // Scalar Multiplication
 impl Mul<Vec2> for f64 {
     type Output = Vec2;
 
     fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self * rhs.x,
-            y: self * rhs.y,
-        }
-    }
-}
-impl Mul<&Vec2> for &f64 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &Vec2) -> Vec2 {
         Vec2 {
             x: self * rhs.x,
             y: self * rhs.y,
@@ -278,29 +310,19 @@ impl Mul<Vec2> for &f64 {
         }
     }
 }
+impl Mul<&Vec2> for &f64 {
+    type Output = Vec2;
+
+    fn mul(self, rhs: &Vec2) -> Vec2 {
+        Vec2 {
+            x: self * rhs.x,
+            y: self * rhs.y,
+        }
+    }
+}
 
 // Division
 impl Div<Vec2> for Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-        }
-    }
-}
-impl Div<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-        }
-    }
-}
-impl Div<Vec2> for &Vec2 {
     type Output = Vec2;
 
     fn div(self, rhs: Vec2) -> Vec2 {
@@ -320,22 +342,32 @@ impl Div<&Vec2> for Vec2 {
         }
     }
 }
+impl Div<Vec2> for &Vec2 {
+    type Output = Vec2;
+
+    fn div(self, rhs: Vec2) -> Vec2 {
+        Vec2 {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+        }
+    }
+}
+impl Div<&Vec2> for &Vec2 {
+    type Output = Vec2;
+
+    fn div(self, rhs: &Vec2) -> Vec2 {
+        Vec2 {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+        }
+    }
+}
 
 // Scalar Division
 impl Div<f64> for Vec2 {
     type Output = Vec2;
 
     fn div(self, rhs: f64) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs,
-            y: self.y / rhs,
-        }
-    }
-}
-impl Div<&f64> for &Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &f64) -> Vec2 {
         Vec2 {
             x: self.x / rhs,
             y: self.y / rhs,
@@ -362,22 +394,22 @@ impl Div<f64> for &Vec2 {
         }
     }
 }
+impl Div<&f64> for &Vec2 {
+    type Output = Vec2;
+
+    fn div(self, rhs: &f64) -> Vec2 {
+        Vec2 {
+            x: self.x / rhs,
+            y: self.y / rhs,
+        }
+    }
+}
 
 // Scalar Division
 impl Div<Vec2> for f64 {
     type Output = Vec2;
 
     fn div(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self / rhs.x,
-            y: self / rhs.y,
-        }
-    }
-}
-impl Div<&Vec2> for &f64 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &Vec2) -> Vec2 {
         Vec2 {
             x: self / rhs.x,
             y: self / rhs.y,
@@ -398,6 +430,16 @@ impl Div<Vec2> for &f64 {
     type Output = Vec2;
 
     fn div(self, rhs: Vec2) -> Vec2 {
+        Vec2 {
+            x: self / rhs.x,
+            y: self / rhs.y,
+        }
+    }
+}
+impl Div<&Vec2> for &f64 {
+    type Output = Vec2;
+
+    fn div(self, rhs: &Vec2) -> Vec2 {
         Vec2 {
             x: self / rhs.x,
             y: self / rhs.y,

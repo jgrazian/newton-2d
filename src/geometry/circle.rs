@@ -3,15 +3,26 @@ use wasm_bindgen::prelude::*;
 use super::shape::Shape;
 use crate::math::vec2::Vec2;
 
+#[wasm_bindgen]
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Circle {
     center: Vec2,
     radius: f64,
 }
 
+#[wasm_bindgen]
 impl Circle {
+    #[wasm_bindgen(constructor)]
     pub fn new(center: Vec2, radius: f64) -> Circle {
         Circle { center, radius }
+    }
+
+    pub fn center(&self) -> Vec2 {
+        self.center
+    }
+
+    pub fn area(&self) -> f64 {
+        self.radius * self.radius * std::f64::consts::PI
     }
 }
 
@@ -21,11 +32,11 @@ impl Shape for Circle {
     }
 
     fn center(&self) -> Vec2 {
-        self.center
+        self.center()
     }
 
     fn area(&self) -> f64 {
-        self.radius * self.radius * std::f64::consts::PI
+        self.area()
     }
 }
 

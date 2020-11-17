@@ -187,19 +187,19 @@ mod tests {
 
     #[test]
     fn test_gjk_poly_poly() {
-        let a = Polygon::new(vec![
+        let a = Polygon::new(&vec![
             Vec2::new(0.0, 0.0),
             Vec2::new(5.0, 0.0),
             Vec2::new(5.0, 5.0),
             Vec2::new(0.0, 5.0),
         ]);
-        let b = Polygon::new(vec![
+        let b = Polygon::new(&vec![
             Vec2::new(2.0, 2.0),
             Vec2::new(7.0, 2.0),
             Vec2::new(7.0, 7.0),
             Vec2::new(2.0, 7.0),
         ]);
-        let c = Polygon::new(vec![
+        let c = Polygon::new(&vec![
             Vec2::new(10.0, 10.0),
             Vec2::new(15.0, 10.0),
             Vec2::new(15.0, 15.0),
@@ -219,13 +219,13 @@ mod tests {
 
     #[test]
     fn test_gjk_poly_circle() {
-        let a = Polygon::new(vec![
+        let a = Polygon::new(&vec![
             Vec2::new(0.0, 0.0),
             Vec2::new(5.0, 0.0),
             Vec2::new(5.0, 5.0),
             Vec2::new(0.0, 5.0),
         ]);
-        let b = Polygon::new(vec![
+        let b = Polygon::new(&vec![
             Vec2::new(10.0, 10.0),
             Vec2::new(15.0, 10.0),
             Vec2::new(15.0, 15.0),
@@ -263,19 +263,19 @@ mod tests {
 
     #[test]
     fn test_intersect_poly_poly() {
-        let a = Polygon::new(vec![
+        let a = Polygon::new(&vec![
             Vec2::new(0.0, 0.0),
             Vec2::new(5.0, 0.0),
             Vec2::new(5.0, 5.0),
             Vec2::new(0.0, 5.0),
         ]);
-        let b = Polygon::new(vec![
+        let b = Polygon::new(&vec![
             Vec2::new(3.0, 4.0),
             Vec2::new(8.0, 4.0),
             Vec2::new(8.0, 9.0),
             Vec2::new(3.0, 9.0),
         ]);
-        let c = Polygon::new(vec![
+        let c = Polygon::new(&vec![
             Vec2::new(10.0, 10.0),
             Vec2::new(15.0, 10.0),
             Vec2::new(15.0, 15.0),
@@ -288,13 +288,13 @@ mod tests {
 
     #[test]
     fn test_intersect_poly_circle() {
-        let a = Polygon::new(vec![
+        let a = Polygon::new(&vec![
             Vec2::new(0.0, 0.0),
             Vec2::new(5.0, 0.0),
             Vec2::new(5.0, 5.0),
             Vec2::new(0.0, 5.0),
         ]);
-        let b = Polygon::new(vec![
+        let b = Polygon::new(&vec![
             Vec2::new(10.0, 10.0),
             Vec2::new(15.0, 10.0),
             Vec2::new(15.0, 15.0),

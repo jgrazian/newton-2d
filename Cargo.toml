@@ -1,7 +1,10 @@
 [package]
 name = "newton-2d"
 version = "0.1.0"
-authors = ["Joe Graziano <joeyg11@vt.edu>"]
+authors = ["Joseph Graziano <joeyg11@vt.edu>"]
+description = "A shitty physics engine"
+repository = "https://github.com/jgrazian/newton-2d"
+license = "MIT"
 edition = "2018"
 
 [lib]

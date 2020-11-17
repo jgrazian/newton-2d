@@ -9,11 +9,11 @@ pub struct Polygon {
 }
 
 impl Polygon {
-    pub fn new(v: Vec<Vec2>) -> Polygon {
+    pub fn new(v: &[Vec2]) -> Polygon {
         if v.len() < 3 {
             panic!("Polygon must have at least 3 verticies!")
         }
-        Polygon { vertices: v }
+        Polygon { vertices: v.to_vec() }
     }
 }
 
@@ -72,7 +72,7 @@ mod tests {
 
     #[test]
     fn test_polygon_support() {
-        let a = Polygon::new(vec![
+        let a = Polygon::new(&vec![
             Vec2::new(0.0, 0.0),
             Vec2::new(5.0, 0.0),
             Vec2::new(5.0, 5.0),
@@ -84,7 +84,7 @@ mod tests {
 
     #[test]
     fn test_polygon_area() {
-        let a = Polygon::new(vec![
+        let a = Polygon::new(&vec![
             Vec2::new(0.0, 0.0),
             Vec2::new(5.0, 0.0),
             Vec2::new(5.0, 5.0),
@@ -96,7 +96,7 @@ mod tests {
 
     #[test]
     fn test_polygon_center() {
-        let a = Polygon::new(vec![
+        let a = Polygon::new(&vec![
             Vec2::new(0.0, 0.0),
             Vec2::new(5.0, 0.0),
             Vec2::new(5.0, 5.0),
