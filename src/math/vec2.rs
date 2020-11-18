@@ -1,4 +1,7 @@
-use core::ops::{Add, Div, Mul, Neg, Sub};
+use std::ops;
+
+extern crate overload;
+use overload::overload;
 use wasm_bindgen::prelude::*;
 
 /// A 2d vector
@@ -111,368 +114,39 @@ impl Vec2 {
     }
 }
 
-// Addition
-impl Add<Vec2> for Vec2 {
-    type Output = Vec2;
+overload!((a: ?Vec2) + (b: ?Vec2) -> Vec2 { Vec2 { x: a.x + b.x, y: a.y + b.y } });
+overload!((a: ?Vec2) - (b: ?Vec2) -> Vec2 { Vec2 { x: a.x - b.x, y: a.y - b.y } });
 
-    fn add(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-impl Add<Vec2> for &Vec2 {
-    type Output = Vec2;
+overload!((a: ?Vec2) * (b: ?Vec2) -> Vec2 { Vec2 { x: a.x * b.x, y: a.y * b.y } });
+overload!((a: ?f64)  * (b: ?Vec2) -> Vec2 { Vec2 { x: a * b.x, y: a * b.y } });
+overload!((a: ?Vec2) * (b: ?f64)  -> Vec2 { Vec2 { x: a.x * b, y: a.y * b } });
 
-    fn add(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-impl Add<&Vec2> for Vec2 {
-    type Output = Vec2;
+overload!((a: ?Vec2) / (b: ?Vec2) -> Vec2 { Vec2 { x: a.x / b.x, y: a.y / b.y } });
+overload!((a: ?f64)  / (b: ?Vec2) -> Vec2 { Vec2 { x: a / b.x, y: a / b.y } });
+overload!((a: ?Vec2) / (b: ?f64)  -> Vec2 { Vec2 { x: a.x / b, y: a.y / b } });
 
-    fn add(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-impl Add<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn add(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-
-// Subtraction
-impl Sub<Vec2> for Vec2 {
-    type Output = Vec2;
-
-    fn sub(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y,
-        }
-    }
-}
-impl Sub<&Vec2> for Vec2 {
-    type Output = Vec2;
-
-    fn sub(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y,
-        }
-    }
-}
-impl Sub<Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn sub(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y,
-        }
-    }
-}
-impl Sub<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn sub(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x - rhs.x,
-            y: self.y - rhs.y,
-        }
-    }
-}
-
-/// Componentwise vector multiplication
-impl Mul<Vec2> for Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
-        }
-    }
-}
-impl Mul<&Vec2> for Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
-        }
-    }
-}
-impl Mul<Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
-        }
-    }
-}
-impl Mul<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs.x,
-            y: self.y * rhs.y,
-        }
-    }
-}
-
-/// Scalar Multiplication
-impl Mul<f64> for Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: f64) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs,
-            y: self.y * rhs,
-        }
-    }
-}
-impl Mul<&f64> for Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &f64) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs,
-            y: self.y * rhs,
-        }
-    }
-}
-impl Mul<f64> for &Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: f64) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs,
-            y: self.y * rhs,
-        }
-    }
-}
-impl Mul<&f64> for &Vec2 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &f64) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs,
-            y: self.y * rhs,
-        }
-    }
-}
-
-// Scalar Multiplication
-impl Mul<Vec2> for f64 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self * rhs.x,
-            y: self * rhs.y,
-        }
-    }
-}
-impl Mul<&Vec2> for f64 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self * rhs.x,
-            y: self * rhs.y,
-        }
-    }
-}
-impl Mul<Vec2> for &f64 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self * rhs.x,
-            y: self * rhs.y,
-        }
-    }
-}
-impl Mul<&Vec2> for &f64 {
-    type Output = Vec2;
-
-    fn mul(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self * rhs.x,
-            y: self * rhs.y,
-        }
-    }
-}
-
-// Division
-impl Div<Vec2> for Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-        }
-    }
-}
-impl Div<&Vec2> for Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-        }
-    }
-}
-impl Div<Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-        }
-    }
-}
-impl Div<&Vec2> for &Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs.x,
-            y: self.y / rhs.y,
-        }
-    }
-}
-
-// Scalar Division
-impl Div<f64> for Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: f64) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs,
-            y: self.y / rhs,
-        }
-    }
-}
-impl Div<&f64> for Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &f64) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs,
-            y: self.y / rhs,
-        }
-    }
-}
-impl Div<f64> for &Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: f64) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs,
-            y: self.y / rhs,
-        }
-    }
-}
-impl Div<&f64> for &Vec2 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &f64) -> Vec2 {
-        Vec2 {
-            x: self.x / rhs,
-            y: self.y / rhs,
-        }
-    }
-}
-
-// Scalar Division
-impl Div<Vec2> for f64 {
-    type Output = Vec2;
-
-    fn div(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self / rhs.x,
-            y: self / rhs.y,
-        }
-    }
-}
-impl Div<&Vec2> for f64 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self / rhs.x,
-            y: self / rhs.y,
-        }
-    }
-}
-impl Div<Vec2> for &f64 {
-    type Output = Vec2;
-
-    fn div(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self / rhs.x,
-            y: self / rhs.y,
-        }
-    }
-}
-impl Div<&Vec2> for &f64 {
-    type Output = Vec2;
-
-    fn div(self, rhs: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self / rhs.x,
-            y: self / rhs.y,
-        }
-    }
-}
-
-/// Self negation (-)
-impl Neg for Vec2 {
-    type Output = Vec2;
-
-    fn neg(self) -> Vec2 {
-        Vec2 {
-            x: -self.x,
-            y: -self.y,
-        }
-    }
-}
-impl Neg for &Vec2 {
-    type Output = Vec2;
-
-    fn neg(self) -> Vec2 {
-        Vec2 {
-            x: -self.x,
-            y: -self.y,
-        }
-    }
-}
+overload!(- (a: ?Vec2) -> Vec2 { Vec2 { x: -a.x, y: -a.y } });
 
 /// Vec2 unit tests
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_ops() {
+        assert_eq!(Vec2{x: 1.0, y: 3.0} + Vec2{x: 2.0, y: -2.0}, Vec2{x: 3.0, y: 1.0});
+        assert_eq!(Vec2{x: 1.0, y: 3.0} - Vec2{x: 2.0, y: -2.0}, Vec2{x: -1.0, y: 5.0});
+
+        assert_eq!(Vec2{x: 1.0, y: 3.0} * Vec2{x: 2.0, y: -2.0}, Vec2{x: 2.0, y: -6.0});
+        assert_eq!(Vec2{x: 1.0, y: 3.0} * 4.0, Vec2{x: 4.0, y: 12.0});
+        assert_eq!(4.0 * Vec2{x: 1.0, y: 3.0}, Vec2{x: 4.0, y: 12.0});
+
+        assert_eq!(Vec2{x: 1.0, y: 3.0} / Vec2{x: 2.0, y: -2.0}, Vec2{x: 0.5, y: -1.5});
+        assert_eq!(Vec2{x: 1.0, y: 3.0} / 4.0, Vec2{x: 0.25, y: 0.75});
+        assert_eq!(6.0 / Vec2{x: 1.0, y: 3.0}, Vec2{x: 6.0, y: 2.0});
+
+        assert_eq!(-Vec2{x: 1.0, y: 3.0}, Vec2{x: -1.0, y: -3.0});
+    }
 
     #[test]
     fn test_splat() {
