@@ -13,7 +13,9 @@ impl Polygon {
         if v.len() < 3 {
             panic!("Polygon must have at least 3 verticies!")
         }
-        Polygon { vertices: v.to_vec() }
+        Polygon {
+            vertices: v.to_vec(),
+        }
     }
 }
 
@@ -37,8 +39,8 @@ impl Shape for Polygon {
         let mut area = 0.0;
         let mut i = self.vertices.len() - 1;
         for j in 0..self.vertices.len() {
-            area += self.vertices[i].x() * self.vertices[j].y()
-                - self.vertices[j].x() * self.vertices[i].y();
+            area +=
+                self.vertices[i].x * self.vertices[j].y - self.vertices[j].x * self.vertices[i].y;
 
             i = j;
         }
@@ -51,10 +53,10 @@ impl Shape for Polygon {
         let mut cy = 0.0;
         let mut i = self.vertices.len() - 1;
         for j in 0..self.vertices.len() {
-            let c = self.vertices[i].x() * self.vertices[j].y()
-                - self.vertices[j].x() * self.vertices[i].y();
-            cx += c * (self.vertices[i].x() + self.vertices[j].x());
-            cy += c * (self.vertices[i].y() + self.vertices[j].y());
+            let c =
+                self.vertices[i].x * self.vertices[j].y - self.vertices[j].x * self.vertices[i].y;
+            cx += c * (self.vertices[i].x + self.vertices[j].x);
+            cy += c * (self.vertices[i].y + self.vertices[j].y);
 
             i = j;
         }

@@ -76,9 +76,9 @@ pub fn gjk(shape_a: &dyn Shape, shape_b: &dyn Shape) -> GJKResult {
 /// Vector triple product. Used in GJK
 fn triple_product(a: &Vec2, b: &Vec2, c: &Vec2) -> Vec2 {
     let first: f64 = Vec2::cross(a, b);
-    let prod = Vec2::new(-c.y() * first, c.x() * first);
+    let prod = Vec2::new(-c.y * first, c.x * first);
     if prod == Vec2::new(0.0, 0.0) {
-        return Vec2::new(a.y(), -a.x());
+        return Vec2::new(a.y, -a.x);
     } else {
         return prod;
     }
@@ -119,8 +119,8 @@ fn find_closest_edge(winding: &Winding, vertices: &Vec<Vec2>) -> Edge {
         let edge = vertices[j] - vertices[i];
 
         let mut norm = match winding {
-            Winding::Clockwise => Vec2::new(-edge.y(), edge.x()),
-            Winding::CounterClockwise => Vec2::new(edge.y(), -edge.x()),
+            Winding::Clockwise => Vec2::new(-edge.y, edge.x),
+            Winding::CounterClockwise => Vec2::new(edge.y, -edge.x),
         };
         norm = norm.normalize();
 
@@ -144,9 +144,9 @@ pub fn intersect(shape_a: &dyn Shape, shape_b: &dyn Shape) -> Option<Vec2> {
         GJKResult::Intersection(v) => vertices = v,
     };
 
-    let e0 = (vertices[1].x() - vertices[0].x()) * (vertices[1].y() + vertices[0].y());
-    let e1 = (vertices[2].x() - vertices[1].x()) * (vertices[2].y() + vertices[1].y());
-    let e2 = (vertices[0].x() - vertices[2].x()) * (vertices[0].y() + vertices[2].y());
+    let e0 = (vertices[1].x - vertices[0].x) * (vertices[1].y + vertices[0].y);
+    let e1 = (vertices[2].x - vertices[1].x) * (vertices[2].y + vertices[1].y);
+    let e2 = (vertices[0].x - vertices[2].x) * (vertices[0].y + vertices[2].y);
 
     let winding = match e0 + e1 + e2 >= 0.0 {
         true => Winding::Clockwise,

@@ -8,8 +8,8 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Vec2 {
-    x: f64,
-    y: f64,
+    pub x: f64,
+    pub y: f64,
 }
 
 #[wasm_bindgen]
@@ -23,14 +23,6 @@ impl Vec2 {
     /// Creates a new Vec2 with the same value for x and y
     pub fn splat(v: f64) -> Vec2 {
         Vec2 { x: v, y: v }
-    }
-
-    pub fn x(&self) -> f64 {
-        self.x
-    }
-
-    pub fn y(&self) -> f64 {
-        self.y
     }
 
     /// Length^2
@@ -88,28 +80,28 @@ impl Vec2 {
     pub fn add(&self, other: &Vec2) -> Vec2 {
         Vec2 {
             x: self.x + other.x,
-            y: self.y + other.y
+            y: self.y + other.y,
         }
     }
 
     pub fn sub(&self, other: &Vec2) -> Vec2 {
         Vec2 {
             x: self.x - other.x,
-            y: self.y - other.y
+            y: self.y - other.y,
         }
     }
 
     pub fn mul(&self, other: f64) -> Vec2 {
         Vec2 {
             x: self.x * other,
-            y: self.y * other
+            y: self.y * other,
         }
     }
 
     pub fn div(&self, other: f64) -> Vec2 {
         Vec2 {
             x: self.x / other,
-            y: self.y / other
+            y: self.y / other,
         }
     }
 }
@@ -134,18 +126,30 @@ mod tests {
 
     #[test]
     fn test_ops() {
-        assert_eq!(Vec2{x: 1.0, y: 3.0} + Vec2{x: 2.0, y: -2.0}, Vec2{x: 3.0, y: 1.0});
-        assert_eq!(Vec2{x: 1.0, y: 3.0} - Vec2{x: 2.0, y: -2.0}, Vec2{x: -1.0, y: 5.0});
+        assert_eq!(
+            Vec2 { x: 1.0, y: 3.0 } + Vec2 { x: 2.0, y: -2.0 },
+            Vec2 { x: 3.0, y: 1.0 }
+        );
+        assert_eq!(
+            Vec2 { x: 1.0, y: 3.0 } - Vec2 { x: 2.0, y: -2.0 },
+            Vec2 { x: -1.0, y: 5.0 }
+        );
 
-        assert_eq!(Vec2{x: 1.0, y: 3.0} * Vec2{x: 2.0, y: -2.0}, Vec2{x: 2.0, y: -6.0});
-        assert_eq!(Vec2{x: 1.0, y: 3.0} * 4.0, Vec2{x: 4.0, y: 12.0});
-        assert_eq!(4.0 * Vec2{x: 1.0, y: 3.0}, Vec2{x: 4.0, y: 12.0});
+        assert_eq!(
+            Vec2 { x: 1.0, y: 3.0 } * Vec2 { x: 2.0, y: -2.0 },
+            Vec2 { x: 2.0, y: -6.0 }
+        );
+        assert_eq!(Vec2 { x: 1.0, y: 3.0 } * 4.0, Vec2 { x: 4.0, y: 12.0 });
+        assert_eq!(4.0 * Vec2 { x: 1.0, y: 3.0 }, Vec2 { x: 4.0, y: 12.0 });
 
-        assert_eq!(Vec2{x: 1.0, y: 3.0} / Vec2{x: 2.0, y: -2.0}, Vec2{x: 0.5, y: -1.5});
-        assert_eq!(Vec2{x: 1.0, y: 3.0} / 4.0, Vec2{x: 0.25, y: 0.75});
-        assert_eq!(6.0 / Vec2{x: 1.0, y: 3.0}, Vec2{x: 6.0, y: 2.0});
+        assert_eq!(
+            Vec2 { x: 1.0, y: 3.0 } / Vec2 { x: 2.0, y: -2.0 },
+            Vec2 { x: 0.5, y: -1.5 }
+        );
+        assert_eq!(Vec2 { x: 1.0, y: 3.0 } / 4.0, Vec2 { x: 0.25, y: 0.75 });
+        assert_eq!(6.0 / Vec2 { x: 1.0, y: 3.0 }, Vec2 { x: 6.0, y: 2.0 });
 
-        assert_eq!(-Vec2{x: 1.0, y: 3.0}, Vec2{x: -1.0, y: -3.0});
+        assert_eq!(-Vec2 { x: 1.0, y: 3.0 }, Vec2 { x: -1.0, y: -3.0 });
     }
 
     #[test]
@@ -155,12 +159,12 @@ mod tests {
 
     #[test]
     fn test_x() {
-        assert_eq!(Vec2::new(1.0, 2.0).x(), 1.0)
+        assert_eq!(Vec2::new(1.0, 2.0).x, 1.0)
     }
 
     #[test]
     fn test_y() {
-        assert_eq!(Vec2::new(1.0, 2.0).y(), 2.0)
+        assert_eq!(Vec2::new(1.0, 2.0).y, 2.0)
     }
 
     #[test]
