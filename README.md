@@ -12,4 +12,4 @@ We will see if it works.
 3. Install wasm-pack
     `https://rustwasm.github.io/wasm-pack/installer/`
 4. Build
-    `wasm-pack build`
+    `wasm-pack build -- --features wee_alloc`

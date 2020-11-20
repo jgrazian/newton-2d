@@ -1,5 +1,3 @@
-use wasm_bindgen::prelude::*;
-
 use super::shape::Shape;
 use crate::math::vec2::Vec2;
 

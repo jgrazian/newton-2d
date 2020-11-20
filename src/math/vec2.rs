@@ -55,18 +55,11 @@ impl Vec2 {
 
     /// Normalize
     pub fn normalize(&self) -> Vec2 {
-        let len = self.len();
-        Vec2 {
-            x: self.x / len,
-            y: self.y / len,
-        }
+        self / self.len()
     }
 
     pub fn lerp(v: &Vec2, w: &Vec2, percent: f64) -> Vec2 {
-        Vec2 {
-            x: percent * (v.x + w.x),
-            y: percent * (v.y + w.y),
-        }
+        (v + w) * percent
     }
 
     pub fn dot(v: &Vec2, w: &Vec2) -> f64 {
@@ -78,31 +71,19 @@ impl Vec2 {
     }
 
     pub fn add(&self, other: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x + other.x,
-            y: self.y + other.y,
-        }
+        self + other
     }
 
     pub fn sub(&self, other: &Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x - other.x,
-            y: self.y - other.y,
-        }
+        self - other
     }
 
     pub fn mul(&self, other: f64) -> Vec2 {
-        Vec2 {
-            x: self.x * other,
-            y: self.y * other,
-        }
+        self * other
     }
 
     pub fn div(&self, other: f64) -> Vec2 {
-        Vec2 {
-            x: self.x / other,
-            y: self.y / other,
-        }
+        self / other
     }
 }
 

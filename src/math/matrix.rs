@@ -117,13 +117,29 @@ impl Matrix {
     }
 
     fn gaussian_elimination(&mut self, b: &mut Vector) {
-        for j in 0..(self.n-1) {
-            for i in (j+1)..self.n {
-                let m = self[[i, j]] / self[[j, j]];
-                for k in j..self.n {
-                    self[[i, k]] -= m * self[[j, k]];
+        for i in 0..(self.n-1) { // Rows
+
+            // Partial Pivot
+            let mut max_val = self[[i, i]].abs();
+            let mut max_idx = i;
+            for ii in (i+1)..self.n {
+                if self[[ii, i]].abs() > max_val {
+                    max_val = self[[ii, i]].abs();
+                    max_idx = ii;
                 }
-                b[i] -= m * b[j];
+            }
+            if max_idx != i {
+                self.swap_rows(i, max_idx);
+                b.swap(i, max_idx);
+            }
+
+            // Reduce
+            for j in (i+1)..self.n {
+                let m = self[[j, i]] / self[[i, i]]; 
+                for k in i..self.n {
+                    self[[j, k]] -= m * self[[i, k]];
+                }
+                b[j] -= m * b[i];
             }
         }
     }
@@ -140,11 +156,30 @@ impl Matrix {
         x
     }
     
+    /// Solves Ax=b for x using Gaussian Elimination.
     pub fn solve(&self, b: &Vector) -> Vector {
+        if self.n != self.m {
+            panic!("Matrix must be square to solve");
+        }
+        if self.n != b.n {
+            panic!("Matrix and vector must be same size");
+        }
         let mut a_new = self.clone();
         let mut b_new = b.clone();
         a_new.gaussian_elimination(&mut b_new);
         a_new.back_substitution(&b_new)
+    }
+
+    /// Solves Ax=b for x using Gaussian Elimination. Mutates self and the given b vector.
+    pub fn solve_mut(&mut self, b: &mut Vector) -> Vector {
+        if self.n != self.m {
+            panic!("Matrix must be square to solve");
+        }
+        if self.n != b.n {
+            panic!("Matrix and vector must be same size");
+        }
+        self.gaussian_elimination(b);
+        self.back_substitution(b)
     }
 
     pub fn to_string(&self) -> String {
@@ -162,7 +197,6 @@ impl Matrix {
         for i in 0..self.m {
             s.push_str("|");
             for j in 0..self.n {
-                let idx = i * self.n + j;
                 s.push_str(format!("{num:>0$.1$}", max_len+1, PRECISION, num=self[[i, j]]).as_str());
             }
             s.push_str("|\n");
@@ -337,9 +371,9 @@ mod tests {
 
     #[test]
     fn test_solve() {
-        let mut mat = Matrix::from(4, 4, &DATA);
+        let mat = Matrix::from(4, 4, &DATA);
         let b = Vector::from(&[5.0, 16.0, 22.0, 15.0]);
-        let x = mat.solve(& b);
+        let x = mat.solve(&b);
 
         assert_eq!(x.get(0), 16.0);
         assert_eq!(x.get(1), -6.0);

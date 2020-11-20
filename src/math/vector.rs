@@ -1,6 +1,8 @@
 use std::fmt;
 use std::ops;
 
+extern crate overload;
+use overload::overload;
 use wasm_bindgen::prelude::*;
 
 /// An nth dimensional vector
@@ -30,6 +32,20 @@ impl Vector {
         self.data[i] = v;
     }
 
+    pub fn swap(&mut self, o: usize, p: usize) {
+        let tmp = self[o];
+        self[o] = self[p];
+        self[p] = tmp;
+    }
+
+    pub fn dot(a: &Vector, b: &Vector) -> f64 {
+        let mut dot = 0.0;
+        for i in 0..a.n {
+            dot += a[i] * b[i];
+        }
+        dot
+    }
+
     pub fn to_string(&self) -> String {
         const PRECISION: usize = 3;
         let mut s = String::new();
@@ -54,6 +70,41 @@ impl fmt::Display for Vector {
         write!(f, "{}", self.to_string())
     }
 }
+
+overload!((a: ?Vector) + (b: ?Vector) -> Vector {
+    if a.n != b.n {
+        panic!("Unable to add vectors");
+    }
+    let mut v = Vector::new(a.n);
+
+    for i in 0..a.n {
+        v[i] = a[i] + b[i];
+    }
+
+    v
+});
+overload!((a: ?Vector) - (b: ?Vector) -> Vector {
+    if a.n != b.n {
+        panic!("Unable to subtract vectors");
+    }
+    let mut v = Vector::new(a.n);
+
+    for i in 0..a.n {
+        v[i] = a[i] - b[i];
+    }
+
+    v
+});
+overload!((a: ?Vector) * (b: ?Vector) -> Vector {
+    if a.n != b.n {
+        panic!("Unable to multiply vectors of differing lengths");
+    }
+    let mut v = Vector::new(a.n);
+    for i in 0..a.n {
+        v[i] = a[i] * b[i];
+    }
+    v
+});
 
 impl ops::Index<usize> for Vector {
     type Output = f64;

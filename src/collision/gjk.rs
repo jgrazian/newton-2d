@@ -75,7 +75,7 @@ pub fn gjk(shape_a: &dyn Shape, shape_b: &dyn Shape) -> GJKResult {
 
 /// Vector triple product. Used in GJK
 fn triple_product(a: &Vec2, b: &Vec2, c: &Vec2) -> Vec2 {
-    let first: f64 = Vec2::cross(a, b);
+    let first = Vec2::cross(a, b);
     let prod = Vec2::new(-c.y * first, c.x * first);
     if prod == Vec2::new(0.0, 0.0) {
         return Vec2::new(a.y, -a.x);
@@ -173,7 +173,7 @@ pub fn intersect(shape_a: &dyn Shape, shape_b: &dyn Shape) -> Option<Vec2> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::geometry::{Circle, Polygon, Shape};
+    use crate::geometry::{Circle, Polygon};
     use crate::math::Vec2;
 
     #[test]

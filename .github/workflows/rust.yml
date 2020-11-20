@@ -21,7 +21,7 @@ jobs:
     - name: wasm-pack-action
       uses: jetli/wasm-pack-action@v0.3.0
     - name: WASM Build
-      run: wasm-pack build
+      run: wasm-pack build -- --features wee_alloc
     - name: Outpt WASM Package
       uses: actions/upload-artifact@v2
       with:
