@@ -85,6 +85,16 @@ impl Vec2 {
     pub fn div(&self, other: f64) -> Vec2 {
         self / other
     }
+
+    pub fn triple_product(a: &Vec2, b: &Vec2, c: &Vec2) -> Vec2 {
+        let first = Vec2::cross(a, b);
+        let prod = Vec2::new(-c.y * first, c.x * first);
+        if prod.len_sq() < 0.01 {
+            return Vec2::new(a.y, -a.x);
+        } else {
+            return prod;
+        }
+    }
 }
 
 overload!((a: ?Vec2) + (b: ?Vec2) -> Vec2 { Vec2 { x: a.x + b.x, y: a.y + b.y } });
@@ -190,5 +200,14 @@ mod tests {
             Vec2::cross(&Vec2::new(2.0, 3.0), &Vec2::new(5.0, 6.0)),
             -3.0
         )
+    }
+
+    #[test]
+    fn test_triple_product() {
+        let a = Vec2::new(4.0, 3.0);
+        let b = Vec2::new(5.0, 7.0);
+        let c = Vec2::new(4.0, 6.0);
+
+        assert_eq!(Vec2::triple_product(&a, &b, &c), Vec2::new(-78.0, 52.0))
     }
 }

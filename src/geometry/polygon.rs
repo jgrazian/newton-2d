@@ -1,6 +1,9 @@
+use wasm_bindgen::prelude::*;
+
 use super::shape::Shape;
 use crate::math::vec2::Vec2;
 
+#[wasm_bindgen]
 #[derive(Clone, Debug, PartialEq, Default)]
 pub struct Polygon {
     vertices: Vec<Vec2>,
@@ -11,9 +14,31 @@ impl Polygon {
         if v.len() < 3 {
             panic!("Polygon must have at least 3 verticies!")
         }
-        Polygon {
-            vertices: v.to_vec(),
+
+        Polygon { vertices: v.to_vec() }
+    }
+}
+
+#[wasm_bindgen]
+impl Polygon {
+    #[wasm_bindgen(constructor)]
+    pub fn wasm_new(v: &[f64]) -> Polygon {
+        if v.len() < 6 {
+            panic!("Polygon must have at least 3 verticies!")
         }
+        if v.len() % 2 != 0 {
+            panic!("Length of argument must be even number.")
+        }
+
+        let num_verticies = v.len() / 2;
+        let mut vertices = Vec::with_capacity(num_verticies);
+        let mut i = 0;
+        while i < v.len() {
+            vertices.push(Vec2::new(v[i + 0], v[i + 1]));
+            i += 2;
+        }
+
+        Polygon { vertices }
     }
 }
 
@@ -59,8 +84,9 @@ impl Shape for Polygon {
             i = j;
         }
 
-        cx *= 1.0 / (6.0 * self.area());
-        cy *= 1.0 / (6.0 * self.area());
+        let norm = 1.0 / (6.0 * self.area());
+        cx *= norm;
+        cy *= norm;
         Vec2::new(cx, cy)
     }
 }
